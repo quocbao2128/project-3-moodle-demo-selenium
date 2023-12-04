@@ -11,58 +11,66 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-
-# INPUT DATA FILE
-def login_data():
-    # Đọc dữ liệu từ file Excel
-    input_data = pd.read_excel(r'../test_data_level_1.xlsx', sheet_name='teacher_logout').fillna('')
-
-    # Chuyển đổi thành list của tuples
-    data = input_data.to_records(index=False).tolist()
-
-    return data
+import read_write_excel as rwe
 
 
-# test case logout level 1
-class TestProj3Level1:
+# level 1 - mỗi test case đều lấy data
+# test case teacher logout
+class TestTeacherLogoutLevel1:
     def setup_method(self):
         self.driver = webdriver.Chrome()
         self.driver.delete_all_cookies()
-        self.data = login_data()
+        print('\n')
 
     def teardown_method(self):
         self.driver.quit()
 
-    def logout(self, function, user_name, password):
+    def test_teacher_logout(self):
+        input_data = rwe.read_from_excel(r'../test_data.xlsx', 'teacher_logout')
+        data = input_data[0]
+
+        # login
+        self.driver.get(data[1])
         wait_element = WebDriverWait(self.driver, 10)
+        try:
+            wait_element.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a")))
+            time.sleep(2)
+            self.driver.find_element(By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a").click()
 
-        self.driver.get("https://school.moodledemo.net/?lang=en")
-        self.driver.find_element(By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a").click()
-        time.sleep(1)
-        self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, "username").send_keys(user_name)
-        time.sleep(2)
-        self.driver.find_element(By.ID, "password").send_keys(password)
-        time.sleep(2)
-        self.driver.find_element(By.ID, "loginbtn").click()
+            wait_element.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".login-container")))
+            time.sleep(2)
+            self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
 
-        self.driver.find_element(By.ID, "user-menu-toggle").click()
+            wait_element.until(EC.element_to_be_clickable((By.ID, "username")))
+            time.sleep(2)
+            self.driver.find_element(By.ID, "username").send_keys(data[2])
 
-        wait_element.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"carousel-item-main\"]/a[9]")))
-        time.sleep(2)
-        self.driver.find_element(By.XPATH, "//*[@id=\"carousel-item-main\"]/a[9]").click()
+            wait_element.until(EC.element_to_be_clickable((By.ID, "password")))
+            time.sleep(2)
+            self.driver.find_element(By.ID, "password").send_keys(data[3])
 
-        wait_element.until(EC.title_contains("Home"))
-        time.sleep(2)
-        return self.driver.title
+            wait_element.until(EC.element_to_be_clickable((By.ID, "loginbtn")))
+            time.sleep(2)
+            self.driver.find_element(By.ID, "loginbtn").click()
 
-    # @pytest.mark.parametrize được sử dụng để chạy test case với mỗi dòng dữ liệu từ hàm login_data.
-    @pytest.mark.parametrize('function, user_name, password, expected_result', login_data())
-    def test_func_teacher_logout(self, function, user_name, password, expected_result):
-        expected = expected_result.split('|')[0]
-        actual = self.logout(function, user_name, password).split('|')[0]
+            # logout
+            wait_element.until(EC.element_to_be_clickable((By.ID, "user-menu-toggle")))
+            time.sleep(2)
+            self.driver.find_element(By.ID, "user-menu-toggle").click()
 
-        # ketQuaMongDoi so sanh voi ketQuaChayThucTe
-        assert expected in actual
+            wait_element.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"carousel-item-main\"]/a[9]")))
+            time.sleep(2)
+            self.driver.find_element(By.XPATH, "//*[@id=\"carousel-item-main\"]/a[9]").click()
 
+            wait_element.until(EC.title_contains("Home"))
+            time.sleep(2)
+            title = self.driver.title
+
+            # value_to_write = self.driver.title.split
+            rwe.write_to_excel(r'../test_data.xlsx', 'teacher_logout', 5, 1, str(title))
+
+            # ketQuaMongDoi so sanh voi ketQuaChayThucTe
+            assert data[4] in title
+
+        except Exception as e:
+            rwe.write_to_excel(r'../test_data.xlsx', 'teacher_logout', 5, 1, str(e))
