@@ -11,14 +11,16 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-# test case level 0
-class TestProj3Level0:
+# level 0 - hard code data vào từng test case, không lấy data bên ngoài vào
+# test case teacher logout
+class TestTeacherLogoutLevel0:
     def setup_method(self):
         self.driver = webdriver.Chrome()
         self.driver.delete_all_cookies()
 
     def teardown_method(self):
         self.driver.quit()
+        print('\n')
 
     def test_teacher_logout(self):
         self.driver.get("https://school.moodledemo.net/?lang=en")
