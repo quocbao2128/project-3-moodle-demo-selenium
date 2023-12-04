@@ -14,7 +14,7 @@
 
 # **How to run:**
 ## 1. Install [python](https://www.python.org/downloads/) (if not already installed)
-![step01](https://github-production-user-asset-6210df.s3.amazonaws.com/84076266/287787613-005e3b6c-387d-4683-811a-adc7093a01f9.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231204%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231204T175446Z&X-Amz-Expires=300&X-Amz-Signature=7995efd4d61e0eea8236ff98addffd33ab860b94d9b649dfda3849d4422bc6b2&X-Amz-SignedHeaders=host&actor_id=84076266&key_id=0&repo_id=726509442)
+![step01](https://github.com/quocbao2128/project-3-moodle-demo-selenium/assets/84076266/005e3b6c-387d-4683-811a-adc7093a01f9)
 
 ![step02](https://github-production-user-asset-6210df.s3.amazonaws.com/84076266/287788494-a6005d36-6283-44a8-9df7-4e496802638e.PNG?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231204%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231204T175825Z&X-Amz-Expires=300&X-Amz-Signature=5db238fb07a24e6d671653b92524fd3d2c5d204648a4fa427e07a6790fb2ff42&X-Amz-SignedHeaders=host&actor_id=84076266&key_id=0&repo_id=726509442)
 
