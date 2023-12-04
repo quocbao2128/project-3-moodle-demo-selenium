@@ -20,6 +20,7 @@ class TestTeacherLoginLevel0:
 
     def teardown_method(self):
         self.driver.quit()
+        print('\n')
 
     def test_teacher_login_success(self):
         self.driver.get("https://school.moodledemo.net/login/index.php?lang=en")

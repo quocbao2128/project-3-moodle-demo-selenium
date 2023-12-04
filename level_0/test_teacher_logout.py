@@ -20,6 +20,7 @@ class TestTeacherLogoutLevel0:
 
     def teardown_method(self):
         self.driver.quit()
+        print('\n')
 
     def test_teacher_logout(self):
         self.driver.get("https://school.moodledemo.net/?lang=en")

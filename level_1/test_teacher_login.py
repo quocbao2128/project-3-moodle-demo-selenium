@@ -14,119 +14,45 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import read_write_excel as rwe
 
 
-# level 1 - mỗi test case đều lấy data
+# level 2 - test case nhận data dưới dạng đối số (argument) truyền vào
 # test case teacher login
-class TestTeacherLoginLevel1:
+class TestTeacherLoginLevel2:
     def setup_method(self):
         self.driver = webdriver.Chrome()
         self.driver.delete_all_cookies()
-        print('\n')
 
     def teardown_method(self):
         self.driver.quit()
+        print('\n')
 
-    def test_teacher_login_success(self):
-        input_data = rwe.read_from_excel('test_data.xlsx', 'teacher_login')
-        data = input_data[0]
+    def login(self, url, user_name, password):
+        wait_element = WebDriverWait(self.driver, 10)
 
-        self.driver.get(data[1])
+        self.driver.get(url)
 
-        self.driver.find_element(By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a").click()
+        wait_element.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".login-container")))
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
+
         time.sleep(1)
-        self.driver.find_element(By.ID, "username").send_keys(data[2])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "password").send_keys(data[3])
-        time.sleep(2)
+        self.driver.find_element(By.ID, "username").send_keys(user_name)
+        time.sleep(1)
+        self.driver.find_element(By.ID, "password").send_keys(password)
+
+        wait_element.until(EC.element_to_be_clickable((By.ID, "loginbtn")))
+        time.sleep(1)
         self.driver.find_element(By.ID, "loginbtn").click()
         time.sleep(2)
 
-        title = self.driver.title
+        return self.driver.title
+
+    # @pytest.mark.parametrize được sử dụng để chạy test case, data có n dòng thì test case chạy n lần.
+    @pytest.mark.parametrize('function, url, user_name, password, expected_result',
+                             rwe.read_from_excel(r'../test_data.xlsx', 'teacher_login'))
+    def test_func_teacher_login(self, function, url, user_name, password, expected_result):
+        expected = expected_result.split('|')[0]
+        actual = self.login(url, user_name, password).split('|')[0]
+
         # ketQuaMongDoi so sanh voi ketQuaChayThucTe
-        assert data[4] in title
-
-    def test_teacher_login_fail_1(self):
-        input_data = rwe.read_from_excel('test_data.xlsx', 'teacher_login')
-        data = input_data[1]
-
-        self.driver.get(data[1])
-
-        self.driver.find_element(By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a").click()
-        time.sleep(1)
-        self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, "username").send_keys(data[2])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "password").send_keys(data[3])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "loginbtn").click()
-        time.sleep(2)
-
-        title = self.driver.title
-        # ketQuaMongDoi so sanh voi ketQuaChayThucTe
-        assert data[4] in title
-
-    def test_teacher_login_fail_2(self):
-        input_data = rwe.read_from_excel('test_data.xlsx', 'teacher_login')
-        data = input_data[2]
-
-        self.driver.get(data[1])
-
-        self.driver.find_element(By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a").click()
-        time.sleep(1)
-        self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, "username").send_keys(data[2])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "password").send_keys(data[3])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "loginbtn").click()
-        time.sleep(2)
-
-        title = self.driver.title
-        # ketQuaMongDoi so sanh voi ketQuaChayThucTe
-        assert data[4] in title
-
-    def test_teacher_login_fail_3(self):
-        input_data = rwe.read_from_excel('test_data.xlsx', 'teacher_login')
-        data = input_data[3]
-
-        self.driver.get(data[1])
-
-        self.driver.find_element(By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a").click()
-        time.sleep(1)
-        self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, "username").send_keys(data[2])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "password").send_keys(data[3])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "loginbtn").click()
-        time.sleep(2)
-
-        title = self.driver.title
-        # ketQuaMongDoi so sanh voi ketQuaChayThucTe
-        assert data[4] in title
-
-    def test_teacher_login_fail_4(self):
-        input_data = rwe.read_from_excel('test_data.xlsx', 'teacher_login')
-        data = input_data[4]
-
-        self.driver.get(data[1])
-
-        self.driver.find_element(By.XPATH, "//*[@id=\"usernavigation\"]/div[5]/div/span/a").click()
-        time.sleep(1)
-        self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, "username").send_keys(data[2])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "password").send_keys(data[3])
-        time.sleep(2)
-        self.driver.find_element(By.ID, "loginbtn").click()
-        time.sleep(2)
-
-        title = self.driver.title
-        # ketQuaMongDoi so sanh voi ketQuaChayThucTe
-        assert data[4] in title
+        assert expected in actual
 
