@@ -10,7 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 # level 0 - hard code data vào từng test case, không lấy data bên ngoài vào
 # test add new event
-class TestLevel0:
+class TestAddNewEventLevel0:
     def setup_method(self):
         self.driver = webdriver.Chrome()
         self.driver.delete_all_cookies()
@@ -116,7 +116,7 @@ class TestLevel0:
     # @pytest.mark.skip(reason="no way of currently testing this")
     def test_add_new_event_fail_1(self):
         """test-case"""
-        self.driver.get("https://school.moodledemo.net/my/")
+        self.driver.get("https://school.moodledemo.net/my/")    # data
         wait_element = WebDriverWait(self.driver, 10)
 
         # login
@@ -130,11 +130,11 @@ class TestLevel0:
 
         wait_element.until(EC.element_to_be_clickable((By.ID, "username")))
         time.sleep(2)
-        self.driver.find_element(By.ID, "username").send_keys("teacher")
+        self.driver.find_element(By.ID, "username").send_keys("teacher")    # data
 
         wait_element.until(EC.element_to_be_clickable((By.ID, "password")))
         time.sleep(2)
-        self.driver.find_element(By.ID, "password").send_keys("moodle")
+        self.driver.find_element(By.ID, "password").send_keys("moodle")     # data
 
         wait_element.until(EC.element_to_be_clickable((By.ID, "loginbtn")))
         time.sleep(2)

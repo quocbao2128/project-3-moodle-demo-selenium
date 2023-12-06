@@ -11,7 +11,7 @@ import read_write_excel as rwe
 
 # level 1 - test case nhận data dưới dạng tham số truyền vào
 # test add new event
-class TestLevel0:
+class TestAddNewEventLevel1:
     def setup_method(self):
         self.driver = webdriver.Chrome()
         self.driver.delete_all_cookies()
@@ -110,11 +110,11 @@ class TestLevel0:
             time.sleep(2)
             self.driver.find_element(By.XPATH, "//*[@role='document' and @tabindex='-1']")
             actual_result = 'Add'
-
+            print('add new event')
         except NoSuchElementException:
             time.sleep(2)
             self.driver.find_element(By.XPATH, "//*[@role='document' and @tabindex='0']")
             actual_result = 'Not add'
-
+            print('empty title -> not add')
         # ketQuaMongDoi so sanh voi ketQuaChayThucTe
         assert expected_result in actual_result
