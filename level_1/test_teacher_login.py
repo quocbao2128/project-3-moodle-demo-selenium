@@ -14,9 +14,9 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import read_write_excel as rwe
 
 
-# level 2 - test case nhận data dưới dạng đối số (argument) truyền vào
+# level 1 - test case nhận data dưới dạng đối số (argument) truyền vào
 # test case teacher login
-class TestTeacherLoginLevel2:
+class TestTeacherLoginLevel1:
     def setup_method(self):
         self.driver = webdriver.Chrome()
         self.driver.delete_all_cookies()
@@ -30,19 +30,25 @@ class TestTeacherLoginLevel2:
 
         self.driver.get(url)
 
+        wait_element.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="usernavigation"]/div[5]/div/span/a')))
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, '//*[@id="usernavigation"]/div[5]/div/span/a').click()
+
         wait_element.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".login-container")))
-        time.sleep(1)
+        time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, ".login-container").click()
 
-        time.sleep(1)
+        wait_element.until(EC.element_to_be_clickable((By.ID, "username")))
+        time.sleep(2)
         self.driver.find_element(By.ID, "username").send_keys(user_name)
-        time.sleep(1)
+
+        wait_element.until(EC.element_to_be_clickable((By.ID, "password")))
+        time.sleep(2)
         self.driver.find_element(By.ID, "password").send_keys(password)
 
         wait_element.until(EC.element_to_be_clickable((By.ID, "loginbtn")))
-        time.sleep(1)
-        self.driver.find_element(By.ID, "loginbtn").click()
         time.sleep(2)
+        self.driver.find_element(By.ID, "loginbtn").click()
 
         return self.driver.title
 

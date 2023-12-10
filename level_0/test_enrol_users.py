@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
-
+from flaky import flaky
 
 # level 0 - hard code data vào từng test case, không lấy data bên ngoài vào
 # test enrol users
@@ -18,6 +18,10 @@ class TestEnrolUsersLevel0:
         self.driver.quit()
         print('\n')
 
+    # @flaky được sử dụng để chạy lại test case nếu fail, vì ứng dụng Moodle demo hoạt động không ổn định.
+    # (Ứng dụng hoạt động không ổn định có thể trả về kết quả khác nhau khi chạy trên cùng 1 dòng trong data.)
+    # Test case sẽ chạy tối đa 2 lần (max_runs), yêu cầu tối thiểu phải pass 1 lần (min_passes) với mỗi dòng trong data.
+    @flaky(max_runs=2, min_passes=1)
     def test_enrol_users_select_users(self):
         """test-case"""
         self.driver.get("https://school.moodledemo.net/my/courses.php")    # data
