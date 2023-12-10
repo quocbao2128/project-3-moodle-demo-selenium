@@ -5,21 +5,29 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
+from flaky import flaky
 import read_write_excel as rwe
 
 
 # level 1 - test case nhận data dưới dạng tham số truyền vào
 # test enrol users
-class TestEnrolUsersLevel0:
+class TestEnrolUsersLevel1:
     def setup_method(self):
-        self.driver = webdriver.Chrome()
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument("--lang=en-GB")
+        self.driver = webdriver.Chrome(options=self.options)
         self.driver.delete_all_cookies()
+        print('\n')
 
     def teardown_method(self):
         self.driver.quit()
         print('\n')
 
-    # @pytest.mark.parametrize được sử dụng để chạy test case, data có n dòng thì test case chạy n lần.
+    # @pytest.mark.parametrize được sử dụng để chạy lặp lại test case, data có n dòng thì test case chạy n lần.
+    # @flaky được sử dụng để chạy lại test case nếu fail, vì ứng dụng Moodle demo hoạt động không ổn định.
+    # (Ứng dụng hoạt động không ổn định có thể trả về kết quả khác nhau khi chạy trên cùng 1 dòng trong data.)
+    # Test case sẽ chạy tối đa 2 lần (max_runs), yêu cầu tối thiểu phải pass 1 lần (min_passes) với mỗi dòng trong data.
+    @flaky(max_runs=2, min_passes=1)
     @pytest.mark.parametrize('function, url, user_name, password, course_index, select_users, assign_role, expected_result',
                              rwe.read_from_excel(r'../test_data.xlsx', 'enrol_users'))
     def test_enrol_users(self, function, url, user_name, password, course_index, select_users, assign_role, expected_result):
@@ -75,6 +83,11 @@ class TestEnrolUsersLevel0:
         elif select_users == 'not select':
             pass
 
+        # click outside to close autocomplete
+        wait_element.until(EC.element_to_be_clickable((By.XPATH, "//h3[contains(text(), 'Enrolment options')]")))
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, "//h3[contains(text(), 'Enrolment options')]").click()
+
         # select cohorts
         time.sleep(2)
         button = self.driver.find_element(By.XPATH, '//*[@id="fitem_id_cohortlist"]//div[2]//div[3]//span')
@@ -83,6 +96,10 @@ class TestEnrolUsersLevel0:
         wait_element.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="fitem_id_cohortlist"]//ul//li[5]')))
         time.sleep(2)
         self.driver.find_element(By.XPATH, '//*[@id="fitem_id_cohortlist"]//ul//li[5]').click()
+
+        wait_element.until(EC.element_to_be_clickable((By.XPATH, "//h3[contains(text(), 'Enrolment options')]")))
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, "//h3[contains(text(), 'Enrolment options')]").click()
 
         # assign role
         time.sleep(2)
@@ -99,7 +116,8 @@ class TestEnrolUsersLevel0:
         # get number of users enrolled
         num_user_enrolled = wait_element.until(EC.element_to_be_clickable((By.XPATH, '//div[contains(@class, "toast-message")]'))).text
         time.sleep(3)
-        print(num_user_enrolled)
+        print('\n', num_user_enrolled)
 
         # ketQuaMongDoi so sanh voi ketQuaChayThucTe
         assert expected_result in num_user_enrolled
+

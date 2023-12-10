@@ -14,9 +14,9 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import read_write_excel as rwe
 
 
-# level 2 - test case nhận data dưới dạng tham số truyền vào
+# level 1 - test case nhận data dưới dạng tham số truyền vào
 # test case teacher logout
-class TestTeacherLogoutLevel2:
+class TestTeacherLogoutLevel1:
     def setup_method(self):
         self.driver = webdriver.Chrome()
         self.driver.delete_all_cookies()
