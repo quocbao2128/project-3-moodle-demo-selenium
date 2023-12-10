@@ -37,7 +37,7 @@ class TestAddURLLevel0():
     time.sleep(2)
     self.driver.find_element(By.ID, "id_submitbutton").click()
     time.sleep(2)
-    assert self.driver.title == "MCC : URL | Mount Orange School"
+    assert self.driver.title == "MCC: URL | Mount Orange School"
 
   def test_fail_1(self):
     self.driver.get("https://school.moodledemo.net/course/modedit.php?add=url&type&course=69&section=0&return=0&sr=0&beforemod=0")
