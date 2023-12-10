@@ -28,7 +28,7 @@ class TestAddTopicnLevel0:
         self.driver.find_element(By.ID, "username").send_keys("teacher")
         self.driver.find_element(By.ID, "password").send_keys("moodle")
         self.driver.find_element(By.ID, "loginbtn").click()
-        time.sleep(10)
+        time.sleep(1)
 
         # Access forum and click add topic
         self.driver.get("https://school.moodledemo.net/mod/forum/view.php?f=81")
