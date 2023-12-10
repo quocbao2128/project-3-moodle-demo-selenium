@@ -25,6 +25,7 @@ class TestAddTopicLevel1:
         print('\n')
 
     def add_topic(self, name, user_name, password, topic_name, topic_message):
+        print(name)
         try:
             #Login
             self.driver.get("https://school.moodledemo.net/login/index.php?lang=en")
@@ -38,11 +39,11 @@ class TestAddTopicLevel1:
             self.driver.get("https://school.moodledemo.net/mod/forum/view.php?f=81")
             time.sleep(3)
             self.driver.find_element(By.LINK_TEXT, "Add discussion topic").click()
-            time.sleep(1)
+            time.sleep(2)
 
             # Input title
             self.driver.find_element(By.ID, "id_subject").send_keys(topic_name)
-            time.sleep(1)
+            time.sleep(2)
             
             # Input message
             self.driver.switch_to.frame('id_message_ifr')
@@ -61,7 +62,7 @@ class TestAddTopicLevel1:
 
     # @pytest.mark.parametrize 
     @pytest.mark.parametrize('function, name, user_name, password, topic_name, topic_message, expected_result',
-                             rwe.read_from_excel(r'./test_data.xlsx', 'teacher_add_topic'))
+                             rwe.read_from_excel(r'../test_data.xlsx', 'teacher_add_topic'))
     def test_func_add_topic(self, function, name, user_name, password, topic_name, topic_message, expected_result):
         expected = expected_result.split('|')[0]
         actual = self.add_topic( name, user_name, password, topic_name, topic_message).split('|')[0]
